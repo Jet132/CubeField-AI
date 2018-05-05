@@ -25,12 +25,14 @@ import org.jnativehook.keyboard.NativeKeyListener;
 public class Main {
 	static Timer timer;
 	static int index = 0;
-	static ArrayList<ArrayList<String>> names;
+	static ArrayList<ArrayList<Integer>> names;
 	static boolean film;
 	static int key;
 	static Robot robot;
 
 	public static void main(String[] args) {
+		//http://www.cubefield.org.uk/
+		
 		try {
 			robot = new Robot();
 		} catch (AWTException e1) {
@@ -63,7 +65,7 @@ public class Main {
 						try {
 							PrintWriter save = new PrintWriter("Data " + i + ".txt");
 							for (int j = 0; j < names.get(i).size(); j++) {
-								save.println(names.get(i).get(j));
+								save.println(names.get(i).get(j)+".png");
 							}
 							save.close();
 						} catch (FileNotFoundException e) {
@@ -88,10 +90,10 @@ public class Main {
 			}
 		});
 
-		names = new ArrayList<ArrayList<String>>();
-		names.add(new ArrayList<String>());
-		names.add(new ArrayList<String>());
-		names.add(new ArrayList<String>());
+		names = new ArrayList<ArrayList<Integer>>();
+		names.add(new ArrayList<Integer>());
+		names.add(new ArrayList<Integer>());
+		names.add(new ArrayList<Integer>());
 
 		timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
@@ -106,43 +108,51 @@ public class Main {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					image = scaleImage(image, BufferedImage.TYPE_INT_RGB, 157, 99);
+					image = scaleImage(image, BufferedImage.TYPE_INT_RGB, 392, 248);
 					try {
 						ImageIO.write(image, "png", new File("data/" + index + ".png"));
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					names.get(key).add(index + ".png");
+					names.get(key).add(index);
 					index++;
+				} else {
+					for (int i = index - 30; i < 30; i++) {
+						for (int j = 0; j < 3; j++) {
+							for (int k = 0; k < names.get(k).size(); k++) {
+								if(names.get(j).get(k) == i) {
+									names.get(i).remove(k);
+								}
+							}
+						}
+					}
 				}
 			}
 		}, 0, 10);
 
 	}
-	public static BufferedImage scaleImage(BufferedImage image, int imageType,
-	        int newWidth, int newHeight) {
-	        // Make sure the aspect ratio is maintained, so the image is not distorted
-	        double thumbRatio = (double) newWidth / (double) newHeight;
-	        int imageWidth = image.getWidth(null);
-	        int imageHeight = image.getHeight(null);
-	        double aspectRatio = (double) imageWidth / (double) imageHeight;
 
-	        if (thumbRatio < aspectRatio) {
-	            newHeight = (int) (newWidth / aspectRatio);
-	        } else {
-	            newWidth = (int) (newHeight * aspectRatio);
-	        }
+	public static BufferedImage scaleImage(BufferedImage image, int imageType, int newWidth, int newHeight) {
+		// Make sure the aspect ratio is maintained, so the image is not distorted
+		double thumbRatio = (double) newWidth / (double) newHeight;
+		int imageWidth = image.getWidth(null);
+		int imageHeight = image.getHeight(null);
+		double aspectRatio = (double) imageWidth / (double) imageHeight;
 
-	        // Draw the scaled image
-	        BufferedImage newImage = new BufferedImage(newWidth, newHeight,
-	                imageType);
-	        Graphics2D graphics2D = newImage.createGraphics();
-	        graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-	            RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-	        graphics2D.drawImage(image, 0, 0, newWidth, newHeight, null);
+		if (thumbRatio < aspectRatio) {
+			newHeight = (int) (newWidth / aspectRatio);
+		} else {
+			newWidth = (int) (newHeight * aspectRatio);
+		}
 
-	        return newImage;
-	    }
+		// Draw the scaled image
+		BufferedImage newImage = new BufferedImage(newWidth, newHeight, imageType);
+		Graphics2D graphics2D = newImage.createGraphics();
+		graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		graphics2D.drawImage(image, 0, 0, newWidth, newHeight, null);
+
+		return newImage;
+	}
 
 }

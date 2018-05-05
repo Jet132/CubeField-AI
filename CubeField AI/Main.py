@@ -11,7 +11,7 @@ batch_size = 50
 # input x - for 28 x 28 pixels = 784 - this is the flattened image data that is drawn from 
 # mnist.train.nextbatch()
 # dynamically reshape the input
-x = tf.placeholder(tf.float32, [None, 99, 157, 3])
+x = tf.placeholder(tf.float32, [None, 247, 392, 3])
 # now declare the output data placeholder - 10 digits
 y = tf.placeholder(tf.float32, [None, 3])
 
@@ -47,11 +47,12 @@ layer1 = create_new_conv_layer(x, 3, 9, [5, 5], [2, 2], name='layer1')
 layer2 = create_new_conv_layer(layer1, 9, 18, [5, 5], [2, 2], name='layer2')
 layer3 = create_new_conv_layer(layer2, 18, 18, [5, 5], [2, 2], name='layer3')
 layer4 = create_new_conv_layer(layer3, 18, 18, [5, 5], [2, 2], name='layer4')
+layer5 = create_new_conv_layer(layer4, 18, 18, [5, 5], [2, 2], name='layer5')
 
-flattened = tf.reshape(layer4, [-1, 7*10*18])
+flattened = tf.reshape(layer5, [-1, 13*8*18])
 
 # setup some weights and bias values for this layer, then activate with ReLU
-wd1 = tf.Variable(tf.truncated_normal([7*10*18, 1000], stddev=0.03), name='wd1')
+wd1 = tf.Variable(tf.truncated_normal([13*8*18, 1000], stddev=0.03), name='wd1')
 bd1 = tf.Variable(tf.truncated_normal([1000], stddev=0.01), name='bd1')
 dense_layer1 = tf.matmul(flattened, wd1) + bd1
 dense_layer1 = tf.nn.relu(dense_layer1)

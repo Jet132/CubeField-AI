@@ -16,5 +16,5 @@ def resize_image(image, resized_size):
     #image.show()
     return image
 time.sleep(3)
-img = resize_image(ImageGrab.grab().crop((540, 390, 1325, 885)), [157, 99])
+img = resize_image(ImageGrab.grab().crop((540, 390, 1325, 885)), [392, 248])
 img.show();
