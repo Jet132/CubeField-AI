@@ -1,0 +1,2 @@
+model_checkpoint_path: "CubeFieldCNN.ckpt"
+all_model_checkpoint_paths: "CubeFieldCNN.ckpt"
